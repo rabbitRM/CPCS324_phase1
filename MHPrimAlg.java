@@ -3,72 +3,54 @@ package GraphFramework;
 import java.util.*;
 
 public class MHPrimAlg extends MSTAlgorithm {
-
-    //---------------------------------------------------------------------------------------------
-    // method that takes an `ArrayList` of `Vertex` objects as its input parameter. 
-    // The method doesn't return anything, 
-    // but instead updates the `isVisited` property of each vertex in the input list
-    // to indicate whether it's included in the MST
-    // and updates the `MSTResultList` and `totalCost` variables 
-    // to store the edges and cost of the resulting MST
-    public void prim(ArrayList<Vertex> vertices) {
+/*
+     * This function implements Prim's algorithm using a min heap to find the minimum spanning tree of a graph.
+     * The graph is represented as a list of Vertex objects, each with a char label.
+     * 
+     * @param graph The graph represented as a list of Vertex objects
+     * @return The minimum spanning tree of the graph as a list of Edge objects
+     */
+    public  void prim( ArrayList<Vertex> vertices) {
+        // Initialize the minimum spanning tree and the visited set
+       
+        Set<Vertex> visited = new HashSet<>();
         
-        // ArrayList to store edges in a heap-like data structure.
-        ArrayList<GraphFramework.Edge> minHeap = new ArrayList<>();
-
-        // variable that stores the sum of weights of all edges in the MST
-        int totalCost = 0;
-
-        // choosing an arbitrary starting vertex (the first one in the input list),
-        Vertex startVertex = vertices.get(0);
-       
-        // marking it as visited,
-        startVertex.isVisited = true;
-
-        // Add all adjacent edges of the start vertex to the min-heap
-        for (GraphFramework.Edge edge : startVertex.adjLists) {
-            minHeap.add(edge);
+        // Initialize the min heap with the first vertex and its edges
+        PriorityQueue<Edge> minHeap = new PriorityQueue<>();
+        visited.add(vertices.get(0));
+         for (int i = 0; i < vertices.get(0).adjLists.size(); i++) {
+            minHeap.add( vertices.get(0).adjLists.get(i));
         }
-
-        // sorting the edges according to their weights 
-        // so that the edge with the smallest weight is always considered first in the algorithm.
-        Collections.sort(minHeap, Comparator.comparingInt(edge -> edge.weight));
-       
-        // Building the MST untill it includes all the vertices 
-        while (!minHeap.isEmpty()) {
-
-            // Getting the edge with the minimum weight
-            Edge currentEdge = minHeap.remove(0);
-
-            // Checking if the target vertex of the edge has already been visited
-            if (currentEdge.target.isVisited) {
-                continue;
-            }
-
-            // ---- Otherwise  
-            
-            // Add the edge to the MSTResultList
-            MSTResultList.add(currentEdge);
-            
-            // add its weight to the total cost 
-            totalCost += currentEdge.weight;
-
+      
+        
+        
+       // Loop until all vertices have been visited
+        while (visited.size() < vertices.size() && !minHeap.isEmpty()) {
            
-            // Adding all adjacent edges of the target vertex to the `minHeap` if they haven't been visited yet 
-            for (Edge edge : currentEdge.target.adjLists) {
+            // Get the minimum edge from the heap
+            Edge minEdge = minHeap.poll();
+            
+            // Check if the edge connects a visited and an unvisited vertex
+            Vertex v1 = minEdge.getSource();
+            Vertex v2 = minEdge.getTarget();
+            
+            if (visited.contains(v1) && !visited.contains(v2)) {
                 
-                if (!edge.target.isVisited) {
-                    minHeap.add(edge);
-                }
+               // Add the edge to the minimum spanning tree and add the unvisited vertex to the visited set
+                MSTResultList.add(minEdge);
+                visited.add(v2);
+                
+                // Add the unvisited vertex's edges to the heap
+                minHeap.addAll(v2.getEdges());
+            } else if (visited.contains(v2) && !visited.contains(v1)) {
+                // Add the edge to the minimum spanning tree and add the unvisited vertex to the visited set
+                MSTResultList.add(minEdge);
+                visited.add(v1);
+                
+                // Add the unvisited vertex's edges to the heap
+                minHeap.addAll(v1.getEdges());
             }
-
-            // Update the target vertex as visited
-            currentEdge.target.isVisited = true;
-
-            // Resorting after adding the new edges 
-            Collections.sort(minHeap, Comparator.comparingInt(edge -> edge.weight));
         }
-
         // calling the method that will print the results 
         displayResultingMST( MSTResultList);
     }
@@ -80,7 +62,7 @@ public class MHPrimAlg extends MSTAlgorithm {
     // The method doesn't return anything, 
     // but instead print the information of the `MSTResultList` and `totalCost` variables 
     public void displayResultingMST( ArrayList<Edge> MSTResultList) {
-        int totalCost = 0;
+        int totalCost = 0 ;
         System.out.println("The phone network (minimum spanning tree) generated by min-heap based Prim algorithm"
                 + "is as follows:\n");
 
@@ -89,6 +71,7 @@ public class MHPrimAlg extends MSTAlgorithm {
             
             System.out.println("Office No." + MSTResultList.get(i).source.displayInfo() + " - Office No. " + MSTResultList.get(i).target.displayInfo()
                     + " : line length: " + MSTResultList.get(i).displayInfo());
+            totalCost+=MSTResultList.get(i).displayInfo();
         }
         
         System.out.println("Total cost: " + totalCost + "\n");
