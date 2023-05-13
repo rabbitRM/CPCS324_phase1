@@ -13,11 +13,12 @@ public class PhoneNWDesignApp {
 
     public static void main(String[] args) throws FileNotFoundException {
 
-//        MHPrimAlg f = new MHPrimAlg();
       
         KruskalAlg k = new KruskalAlg();
         BluePrintsGraph PhLNetwork = new BluePrintsGraph();
-         pmh f2 = new pmh();
+        MSTAlgorithm.graph = PhLNetwork;
+        pmh f2 = new pmh();
+        
         // long variables to store the strating time and ending time 
         //of processing Kruskal and Prim algorithms
         long startTime, endTime;
@@ -26,19 +27,19 @@ public class PhoneNWDesignApp {
         //in nanoseconed between startTime and endTime variables
         double result;
 
-       PhLNetwork.readGraphFromFile("input.txt");
-       k.kruskal(PhLNetwork.vertices);
+       MSTAlgorithm.graph.readGraphFromFile("input.txt");
+       k.kruskal(MSTAlgorithm.graph.vertices);
 //       
-       f2.primAlgorithm(PhLNetwork.vertices);       
+       f2.primAlgorithm(MSTAlgorithm.graph.vertices);       
 
 //        
-      PhLNetwork.makeGraph(100, 200);
+      MSTAlgorithm.graph.makeGraph(100, 200);
      
 //        // computing the starting time for the algorithm
        startTime =  System.currentTimeMillis() ;
 //  
 //        // calling prim Algorithm        
-       f2.primAlgorithm(PhLNetwork.vertices);
+       f2.primAlgorithm(MSTAlgorithm.graph.vertices);
 //        // computing the ending time for the algorithm
         endTime = System.currentTimeMillis() ;
 //
@@ -53,7 +54,7 @@ public class PhoneNWDesignApp {
         startTime = System.currentTimeMillis() ;
         
         // calling Kruskal Algorithm        
-        k.kruskal(PhLNetwork.vertices);
+        k.kruskal(MSTAlgorithm.graph.vertices);
         
         // computing the ending time for the algorithm
         endTime = System.currentTimeMillis() ;
