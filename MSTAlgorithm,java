@@ -1,19 +1,15 @@
 package GraphFramework;
-
 import java.util.ArrayList;
-
-
 
 public abstract class MSTAlgorithm {
     
-    
+    //--------------------------------------------------------------------------------
+    //defining the needed data fields 
     public  ArrayList<GraphFramework.Edge> MSTResultList =  new ArrayList<GraphFramework.Edge>();
-    
-    // ======== I dont know what to do with this (:
     public static Graph graph  ;
-   
     
+    //--------------------------------------------------------------------------------
+    // abstract method should be  implemented by the subclasses to display the MST edges and vertices 
     public abstract void displayResultingMST( ArrayList<GraphFramework.Edge> MSTResultList);
         
-    
 }
