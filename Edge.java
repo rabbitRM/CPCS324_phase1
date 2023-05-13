@@ -47,14 +47,12 @@ public class Edge implements Comparable<Edge>{
     }
     
       
-    // method to 
+    // defining a method to display the weight of the edge
       public int displayInfo(){
           return weight;
       }
       
-      public String toString() {
-        return   source + "-->" + target + " weight=" + weight + '}';
-    }
+    // definging a method to 
        public int compareTo(Edge other) {
         return Integer.compare(weight, other.weight);
     }
