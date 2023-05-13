@@ -6,10 +6,7 @@ import java.util.LinkedList;
 public class Vertex {
     
     public char label ;
-    public int id ;
     public boolean isVisited ;
-    public Vertex parent ;
-    int key ;
     
     public LinkedList<Edge> adjLists = new LinkedList<>();
     
