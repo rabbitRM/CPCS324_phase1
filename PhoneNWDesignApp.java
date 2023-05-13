@@ -19,7 +19,7 @@ public class PhoneNWDesignApp {
         BluePrintsGraph PhLNetwork = new BluePrintsGraph();
         MSTAlgorithm.graph = PhLNetwork;
 
-         pmh f2 = new pmh();
+         MHPrimAlg f2 = new MHPrimAlg();
         // long variables to store the strating time and ending time 
         //of processing Kruskal and Prim algorithms
         long startTime, endTime;
