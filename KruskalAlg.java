@@ -182,7 +182,7 @@ public class KruskalAlg extends MSTAlgorithm {
               totalCost+=MSTResultList.get(i).displayInfo();
         }
 
-        System.out.println("Total cost: " + totalCost + "\n");
+       System.out.println("The cost of designed phone network: " + totalCost + "\n");
 
         
     }
