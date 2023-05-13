@@ -7,7 +7,6 @@ public class Vertex {
     
     public char label ;
     public boolean isVisited ;
-    
     public LinkedList<Edge> adjLists = new LinkedList<>();
     
     public Vertex(char label ){
@@ -19,10 +18,6 @@ public class Vertex {
         
     }
     
-     public char getLabel() {
-        return label;
-    }
-    
     public LinkedList<Edge> getEdges() {
         return adjLists;
     }
@@ -31,7 +26,4 @@ public class Vertex {
         return label ;
     }
     
-    public String toString() {
-        return "Vertex{" + "label=" + label + '}';
-    }
 }
