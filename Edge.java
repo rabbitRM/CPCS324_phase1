@@ -4,7 +4,6 @@ public class Edge implements Comparable<Edge>{
     public int weight ;
     public Vertex source ;
     public Vertex target ;
-    public int nodeId;
     
 //    public Vertex parent ;
     
