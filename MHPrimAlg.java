@@ -51,6 +51,7 @@ public class MHPrimAlg extends MSTAlgorithm {
                 minHeap.addAll(v1.getEdges());
             }
         }
+        
         // calling the method that will print the results 
         displayResultingMST( MSTResultList);
     }
@@ -58,7 +59,6 @@ public class MHPrimAlg extends MSTAlgorithm {
     //---------------------------------------------------------------------------------------------
     // method to diplay the MST information 
     // method that takes an `ArrayList` of `Edge` objects as its input parameter.
-    // and an integer variable that stores the sum of weights of all edges in the MST
     // The method doesn't return anything, 
     // but instead print the information of the `MSTResultList` and `totalCost` variables 
     public void displayResultingMST( ArrayList<Edge> MSTResultList) {
