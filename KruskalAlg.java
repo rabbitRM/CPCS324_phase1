@@ -13,7 +13,7 @@ public class KruskalAlg extends MSTAlgorithm {
     // method that takes an `ArrayList` of `Vertex` objects as its input parameter.
     // The method doesn't return anything, 
     // but instead updates the `MSTResultList` 
-    // to store the edges and cost of the resulting MST
+    // to store the edges of the resulting MST
     public void kruskal(ArrayList<Vertex> vertices) {
 
         // keeps the sets and their roots     
