@@ -2,67 +2,148 @@ package GraphFramework;
 
 import java.util.*;
 
-public class MHPrimAlg extends MSTAlgorithm {
-/*
-     * This function implements Prim's algorithm using a min heap to find the minimum spanning tree of a graph.
-     * The graph is represented as a list of Vertex objects, each with a char label.
-     * 
-     * @param graph The graph represented as a list of Vertex objects
-     * @return The minimum spanning tree of the graph as a list of Edge objects
+
+
+
+
+public class primj extends MSTAlgorithm{
+    
+    class ResultSet {
+
+    
+    int parent;
+
+  
+    int weight;
+}
+
+    //---------------------------Prim's Algorithm using Minheap---------------------
+
+    /**
+     *Prim's Algorithm using Minheap
      */
-    public  void prim( ArrayList<Vertex> vertices) {
-        // Initialize the minimum spanning tree and the visited set
-       
-        Set<Vertex> visited = new HashSet<>();
+   /**
+ * print MST
+ * @param MST the list of edges of the minimum spanning tree
+ */
+    
+
+    public void primMinHeap(ArrayList<Vertex> vertices) {
+        //start time
+        boolean[] Heap = new boolean[vertices.size()];
+
         
-        // Initialize the min heap with the first vertex and its edges
-        PriorityQueue<Edge> minHeap = new PriorityQueue<>();
-        visited.add(vertices.get(0));
-         for (int i = 0; i < vertices.get(0).adjLists.size(); i++) {
-            minHeap.add( vertices.get(0).adjLists.get(i));
+        //keys[] used to check if min heap update is required
+        int[] key = new int[vertices.size()];
+        //create heapNode for all the vertices
+        heapNode[] heapNodes = new heapNode[vertices.size()];
+        for (int i = 0; i < vertices.size(); i++) {
+            heapNodes[i] = new heapNode();
+            heapNodes[i].node = i;
+            heapNodes[i].key = Integer.MAX_VALUE;
+            Heap[i] = true;
+            key[i] = Integer.MAX_VALUE;
         }
-      
-        
-        
-       // Loop until all vertices have been visited
-        while (visited.size() < vertices.size() && !minHeap.isEmpty()) {
-           
-            // Get the minimum edge from the heap
-            Edge minEdge = minHeap.poll();
-            
-            // Check if the edge connects a visited and an unvisited vertex
-            Vertex v1 = minEdge.getSource();
-            Vertex v2 = minEdge.getTarget();
-            
-            if (visited.contains(v1) && !visited.contains(v2)) {
-                
-               // Add the edge to the minimum spanning tree and add the unvisited vertex to the visited set
-                MSTResultList.add(minEdge);
-                visited.add(v2);
-                
-                // Add the unvisited vertex's edges to the heap
-                minHeap.addAll(v2.getEdges());
-            } else if (visited.contains(v2) && !visited.contains(v1)) {
-                // Add the edge to the minimum spanning tree and add the unvisited vertex to the visited set
-                MSTResultList.add(minEdge);
-                visited.add(v1);
-                
-                // Add the unvisited vertex's edges to the heap
-                minHeap.addAll(v1.getEdges());
+
+        //decrease the key for the first index
+        heapNodes[0].key = 0;
+
+        //add all the vertices to the MinHeap
+        MinHeap minHeap = new MinHeap(vertices.size());
+        //add all the vertices to priority queue
+        for (int i = 0; i < vertices.size(); i++) {
+            minHeap.insert(heapNodes[i]);
+        }
+
+        do {
+            //extract the min
+            heapNode extractedNode = minHeap.extractMin();
+
+            //extracted vertex
+            int extractedVertex = extractedNode.node;
+            Heap[extractedVertex] = false;
+
+            //iterate through all the adjacent vertices
+            LinkedList<Edge> list = findVertexLabel(vertices, extractedVertex).adjLists;
+            for (int i = 0; i < list.size(); i++) {
+                Edge edge = list.get(i);
+
+                //only if edge destination is present in heap
+                if (Heap[edge.target.label]) {
+
+                    int destination = edge.target.label;
+                    int newKey = edge.getWeight();
+                    //check if updated key < existing key, if yes, update if
+                    if (key[destination] > newKey) {
+
+                        toDecreaseKey(minHeap, newKey, destination);
+                        //update the parent node for destination
+
+                        key[destination] = newKey;
+                        Edge newMSTEdge = new Edge(findVertexLabel(vertices, extractedVertex), findVertexLabel(vertices, destination), newKey);
+                        MSTResultList.add(newMSTEdge);
+                    }
+
+                }
             }
-        }
-        
-        // calling the method that will print the results 
-        displayResultingMST( MSTResultList);
+        } while (!minHeap.isEmpty());
+       
+       displayResultingMST(MSTResultList);
+//printMST(resultSet, vertices);
+    }
+    
+   
+    /**
+     * print MST
+     * @param resultSet the result set of vertices and edges of the minimum spanning tree
+     */
+    private void printMST(ResultSet[] resultSet ,ArrayList<Vertex> vertices ) {
+        int totalWeight = 0, i = 0;
+   
+            System.out.println("Minimum Spanning Tree: ");
+
+        while (i < resultSet.length) {
+            totalWeight += resultSet[i++].weight;
+       
+                System.out.println("Edge: " + i + " - " + resultSet[i].parent
+                        + " weight: " + resultSet[i].weight);
+ }
+        System.out.println("Minimum Spanning Tree cost: " + totalWeight);
     }
 
-    //---------------------------------------------------------------------------------------------
-    // method to diplay the MST information 
-    // method that takes an `ArrayList` of `Edge` objects as its input parameter.
-    // The method doesn't return anything, 
-    // but instead print the information of the `MSTResultList` and `totalCost` variables 
-    public void displayResultingMST( ArrayList<Edge> MSTResultList) {
+
+//------------------------------------------------------------------------------
+
+    /**
+     * toDecreaseKey method used by prim's min-heap method 
+     * @param mH the min-heap object 
+     * @param newKey the new node key 
+     * @param vertex vertex of the node
+     */
+    private void toDecreaseKey(MinHeap mH, int newKey, int vertex) {
+
+        //get the index which key's needs a decrease;
+        int index = mH.decreaseKey[vertex];
+
+        //get the node and update its value
+        heapNode node = mH.minHeap[index];
+        node.key = newKey;
+        mH.bubbleUp(index);
+    }
+    
+    public Vertex findVertexLabel(ArrayList<Vertex> vertices , int label){
+        for (int i = 0; i < vertices.size(); i++) {
+            if (label == vertices.get(i).label)
+                return vertices.get(i);
+        }
+        return null ;
+    }
+
+ public void displayResultingMST( ArrayList<Edge> MSTResultList) {
+        
+        // variable to store the cost of MSTResultList
         int totalCost = 0 ;
+        
         System.out.println("The phone network (minimum spanning tree) generated by min-heap based Prim algorithm"
                 + "is as follows:\n");
 
@@ -78,3 +159,4 @@ public class MHPrimAlg extends MSTAlgorithm {
 
     }
 }
+
