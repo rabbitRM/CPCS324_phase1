@@ -29,7 +29,7 @@ public class primj extends MSTAlgorithm{
     
 
     public void primMinHeap(ArrayList<Vertex> vertices) {
-        //start time
+       
         boolean[] Heap = new boolean[vertices.size()];
 
         
