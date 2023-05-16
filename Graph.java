@@ -9,13 +9,14 @@ import java.util.Comparator;
 import java.util.Scanner;
 import java.util.Random;
 
+
 public class Graph {
 
     public static int vertexNo;
     public static int edgeNo;
     public static boolean isDiagraph;
     public static ArrayList<Vertex> vertices = new ArrayList<Vertex>();
-
+    
     public Graph(int edgeNo, boolean isDiagraph) {
         this.edgeNo = edgeNo;
         this.isDiagraph = isDiagraph;
@@ -24,12 +25,12 @@ public class Graph {
     public Graph() {
     }
     
-    public static Office createVertex(char label ){
-        return new Office(label );
-    }
-    public static Line createEdge(Vertex source, Vertex target , int weight){
-        return new Line(source,  target ,  weight);
-    }
+//    public static Office createVertex(char label ){
+//        return new Office(label );
+//    }
+//    public static Line createEdge(Vertex source, Vertex target , int weight){
+//        return new Line(source,  target ,  weight);
+//    }
      
     // method n takes as parameters the number of vertices and the number of edges
     // It is responsible for creating a graph object with the specified parameters 
@@ -44,7 +45,7 @@ public class Graph {
         // Adding the vertices to its list in the graph 
         for (int i = 0; i < vno; i++) {
             
-            g.vertices.add(Office.createVertex(ch++));
+            g.vertices.add(Office.createVertex(i));
 
             // incrementing the vertices number as requested ! 
             vertexNo++;
@@ -174,7 +175,8 @@ public class Graph {
         vno = input.nextInt();
         
         // list to store the labels 
-        char[] listLabels = new char[vno];
+        int[] listLabels = new int[vno];
+        
         
         // counter act like index for the label list
         int counter = 0;
@@ -184,15 +186,15 @@ public class Graph {
             
             // reading the label 
             char ch = input2.next().charAt(0);
-            
+           
             // a flag to know wether to add the label to the list or not 
             boolean canAdd = true;
             
             // loop to go through the list labels
             // to check if the label is already exist
             for (int j = 0; j < listLabels.length; j++) {
-                
-                if (listLabels[j] == ch) {
+               
+                if (listLabels[j] == ( ch-'A')) {
                   
                     canAdd = false;
                     break;
@@ -204,13 +206,14 @@ public class Graph {
             // if the flag = true , then we can add the label 
             // and increment the index to the next place for another label 
             if (canAdd) {
-                listLabels[counter] = ch;
+                listLabels[counter] = ch-'A';
                 counter++;
             }
         }
         
         // Adding the vertices to its list in the graph
         for (int i = 0; i < vno; i++) {
+          
             g.vertices.add(Office.createVertex(listLabels[i]));
             
             // incrementing the vertices number as requested ! 
@@ -236,11 +239,11 @@ public class Graph {
             for (int j = 0; j < vertices.size(); j++) {
                 
                 // if the current vertixs’s labels is the same labels 
-                if (vertices.get(j).label == label1) 
+                if (vertices.get(j).label == label1 - 'A') 
                     
                     v1 = vertices.get(j);
                     
-               else if (vertices.get(j).label == label2) 
+               else if (vertices.get(j).label == label2-'A') 
                    
                     v2 = vertices.get(j);
                 
@@ -249,7 +252,8 @@ public class Graph {
             // checking if both variables are not null , to not cause null pointer exeption !
             if (v1 != null && v2 != null) {
                 
-                // adding the new edge                
+                // adding the new edge   
+             
                 addEdge(v1, v2, input.nextInt());
                
 
@@ -280,5 +284,6 @@ public class Graph {
         }
 
     }
+    
 
 }
